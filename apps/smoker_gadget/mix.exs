@@ -54,7 +54,7 @@ defmodule SmokerGadget.MixProject do
       {:ring_logger, "~> 0.6"},
       {:toolshed, "~> 0.2"},
       {:timex, "~> 3.5"},
-      {:circuits_spi, "~> 0.1"},
+      {:circuits_spi, "~> 0.1", only: :prod},
       # {:pigpiox, "~> 0.1"}
     ] ++ deps(@target)
   end
@@ -70,10 +70,10 @@ defmodule SmokerGadget.MixProject do
 
   defp deps(target) do
     [
-      {:nerves_runtime, "~> 0.6"},
-      {:nerves_init_gadget, "~> 0.4"},
+      {:nerves_runtime, "~> 0.6", only: :prod},
+      {:nerves_init_gadget, "~> 0.4", only: :prod},
       # {:circuits_spi, "~> 0.1"},
-      {:pigpiox, "~> 0.1"}
+      {:pigpiox, "~> 0.1", only: :prod}
     ] ++ system(target)
   end
 
