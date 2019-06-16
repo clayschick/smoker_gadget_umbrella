@@ -49,7 +49,7 @@ defmodule SmokerGadget.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:nerves, "~> 1.3", only: :dev runtime: false},
+      {:nerves, "~> 1.3", only: :dev, runtime: false},
       {:shoehorn, "~> 0.4"},
       {:ring_logger, "~> 0.6"},
       {:toolshed, "~> 0.2"},
