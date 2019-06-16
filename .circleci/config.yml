@@ -52,4 +52,5 @@ jobs:
 
       # - run: mix do deps.get, compile  # get updated dependencies & compile them
       #- run: mix ecto.create
+      - run: mix credo
       - run: mix test
