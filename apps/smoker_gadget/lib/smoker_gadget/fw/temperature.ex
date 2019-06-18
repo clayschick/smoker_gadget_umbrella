@@ -13,7 +13,7 @@ defmodule SmokerGadget.Fw.Temperature do
 
   require Logger
 
-  @default_adapter SmokerGadget.Fw.Adapters.SpiTest
+  @default_adapter SmokerGadget.Fw.Adapters.Spi
   @default_device_bus "spidev0.0"
   @default_mode 1
   @default_speed_hz 500_000
@@ -38,7 +38,7 @@ defmodule SmokerGadget.Fw.Temperature do
   """
   @spec connect :: %{ref: reference, adapter: module}
   def connect do
-    config = Application.get_env(:fw, Fw.Temperature, [])
+    config = Application.get_env(:smoker_gadget, Fw.Temperature, [])
     adapter = config[:spi_adapter] || @default_adapter
     device_bus = config[:spi_device_bus] || @default_device_bus
     mode = config[:spi_mode] || @default_mode
@@ -94,7 +94,7 @@ defmodule SmokerGadget.Fw.Temperature do
   @doc """
   Generates a stream of temperature values.
   """
-  @spec stream :: Enumerable.number
+  @spec stream :: Enumerable.t
   def stream do
     Stream.repeatedly(fn -> read() end)
   end

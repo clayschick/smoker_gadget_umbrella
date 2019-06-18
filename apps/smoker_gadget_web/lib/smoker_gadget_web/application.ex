@@ -9,9 +9,10 @@ defmodule SmokerGadgetWeb.Application do
     # List all child processes to be supervised
     children = [
       # Start the endpoint when the application starts
-      SmokerGadgetWeb.Endpoint
+      SmokerGadgetWeb.Endpoint,
       # Starts a worker by calling: SmokerGadgetWeb.Worker.start_link(arg)
       # {SmokerGadgetWeb.Worker, arg},
+      SmokerGadgetWeb.PidControlAgent
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

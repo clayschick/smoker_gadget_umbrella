@@ -21,7 +21,7 @@ defmodule SmokerGadget.Fw.Fan do
 
   @spec adjust(number) :: :ok | {:error, any}
   def adjust(pid_output) do
-    config = Application.get_env(:fw, Fw.Fan, [])
+    config = Application.get_env(:smoker_gadget, Fw.Fan, [])
     adapter = config[:pwm_adapter] || @default_adapter
     pwm_frequency_multiplier = config[:pwm_frequency_multiplier] || @default_multiplier
 

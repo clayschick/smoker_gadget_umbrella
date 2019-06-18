@@ -3,6 +3,7 @@ defmodule SmokerGadgetWeb.UserSocket do
 
   ## Channels
   # channel "room:*", SmokerGadgetWeb.RoomChannel
+  channel "pid:*", SmokerGadgetWeb.PidControlChannel
 
   # Socket params are passed from the client and can
   # be used to verify and authenticate a user. After

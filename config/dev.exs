@@ -65,3 +65,12 @@ config :phoenix, :plug_init_mode, :runtime
 # Set a higher stacktrace during development. Avoid configuring such
 # in production as building large stacktraces may be expensive.
 config :phoenix, :stacktrace_depth, 20
+
+config :smoker_gadget, Fw.Temperature,
+  spi_adapter: SmokerGadget.Fw.Adapters.SpiTest
+
+config :smoker_gadget, Fw.Fan,
+  pwm_adapter: SmokerGadget.Fw.Adapters.PwmTest,
+  pwm_pin: 18,
+  pwm_frequency: 25_000,
+  pwm_frequency_multiplier: 1
