@@ -6,6 +6,12 @@ Created the project using
 $ mix phx.new --umbrella --no-ecto smoker_gadget 
 ```
 
+Run it like this
+
+```elixir
+MIX_TARGET=host MIX_ENV=dev mix phx.server
+```
+
 I created the Umbrella project because I could not get the Poncho project to build in a CI enviornment.
 
 Then copied things from the smoker-gadget Poncho project.

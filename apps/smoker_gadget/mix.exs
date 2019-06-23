@@ -4,6 +4,8 @@ defmodule SmokerGadget.MixProject do
   @target System.get_env("MIX_TARGET") || "host"
   @target_env System.get_env("MIX_ENV") || "test"
 
+  @all_targets [:rpi, :rpi0, :rpi2, :rpi3, :rpi3a, :bbb, :x86_64]
+
   def project do
     [
       app: :smoker_gadget,
@@ -47,9 +49,11 @@ defmodule SmokerGadget.MixProject do
   # Specifies your project dependencies.
   #
   # Type `mix help deps` for examples and options.
+
+  # Dependencies for all targets
   defp deps do
     [
-      {:nerves, "~> 1.3", runtime: false},
+      {:nerves, "~> 1.3", only: [:dev, :prod], runtime: false},
       {:shoehorn, "~> 0.4"},
       {:ring_logger, "~> 0.6"},
       {:toolshed, "~> 0.2"},
@@ -68,6 +72,7 @@ defmodule SmokerGadget.MixProject do
     ]
   end
 
+  # Dependencies for all targets except :host
   defp deps(target) do
     [
       {:nerves_runtime, "~> 0.6"},
@@ -84,6 +89,30 @@ defmodule SmokerGadget.MixProject do
   defp system("bbb"), do: [{:nerves_system_bbb, "~> 2.0", runtime: false}]
   defp system("x86_64"), do: [{:nerves_system_x86_64, "~> 1.5", runtime: false}]
   defp system(target), do: Mix.raise("Unknown MIX_TARGET: #{target}")
+
+  # defp deps do
+  #   [
+  #     # Dependencies for all targets
+  #     {:nerves, "~> 1.4", runtime: false},
+  #     {:shoehorn, "~> 0.4"},
+  #     {:ring_logger, "~> 0.6"},
+  #     {:toolshed, "~> 0.2"},
+  #     {:timex, "~> 3.5"},
+
+  #     # Dependencies for all targets except :host
+  #     {:nerves_runtime, "~> 0.6", targets: @all_targets},
+  #     {:nerves_init_gadget, "~> 0.4", targets: @all_targets},
+
+  #     # Dependencies for specific targets
+  #     {:nerves_system_rpi, "~> 1.6", runtime: false, targets: :rpi},
+  #     {:nerves_system_rpi0, "~> 1.6", runtime: false, targets: :rpi0},
+  #     {:nerves_system_rpi2, "~> 1.6", runtime: false, targets: :rpi2},
+  #     {:nerves_system_rpi3, "~> 1.6", runtime: false, targets: :rpi3},
+  #     {:nerves_system_rpi3a, "~> 1.6", runtime: false, targets: :rpi3a},
+  #     {:nerves_system_bbb, "~> 2.0", runtime: false, targets: :bbb},
+  #     {:nerves_system_x86_64, "~> 1.6", runtime: false, targets: :x86_64},
+  #   ]
+  # end
 
   # Aliases are shortcuts or tasks specific to the current project.
   #
