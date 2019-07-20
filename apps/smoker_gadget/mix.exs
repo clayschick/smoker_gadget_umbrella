@@ -4,7 +4,7 @@ defmodule SmokerGadget.MixProject do
   @target System.get_env("MIX_TARGET") || "host"
   @target_env System.get_env("MIX_ENV") || "test"
 
-  @all_targets [:rpi, :rpi0, :rpi2, :rpi3, :rpi3a, :bbb, :x86_64]
+  # @all_targets [:rpi, :rpi0, :rpi2, :rpi3, :rpi3a, :bbb, :x86_64]
 
   def project do
     [
@@ -16,7 +16,7 @@ defmodule SmokerGadget.MixProject do
       config_path: "../../config/config.exs",
       deps_path: "../../deps",
       lockfile: "../../mix.lock",
-      elixir: "~> 1.5",
+      elixir: "~> 1.8",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       build_embedded: @target != "host",
@@ -53,11 +53,12 @@ defmodule SmokerGadget.MixProject do
   # Dependencies for all targets
   defp deps do
     [
-      {:nerves, "~> 1.3", only: [:dev, :prod], runtime: false},
+      # Cannot have and only: statement here because the prod build fails
+      {:nerves, "~> 1.3", runtime: false},
       {:shoehorn, "~> 0.4"},
       {:ring_logger, "~> 0.6"},
       {:toolshed, "~> 0.2"},
-      {:timex, "~> 3.5"},
+      {:timex, "~> 3.5"} # ,
       # {:circuits_spi, "~> 0.1"},
       # {:pigpiox, "~> 0.1"}
     ] ++ deps(@target)
@@ -73,11 +74,19 @@ defmodule SmokerGadget.MixProject do
   end
 
   # Dependencies for all targets except :host
+  # The circuits_spi and pigpiox libraries are not available when
+  # MIX_TARGET=host and MIX_ENV=test which causes compiler warnings.
+  # When the libraries are in the main deps function the App will not
+  # start because the Pigpiox library tries to start but there is no
+  # pigpiod deamon running so it fails because we are testing on the
+  # where no deamon exists.
   defp deps(target) do
     [
       {:nerves_runtime, "~> 0.6"},
       {:nerves_init_gadget, "~> 0.4"},
       {:circuits_spi, "~> 0.1"},
+      # The pigpiod deamon runs on rpi0 by default but not on all target devices
+      # therefore this should be included in the target specific deps below.
       {:pigpiox, "~> 0.1"}
     ] ++ system(target)
   end
