@@ -115,7 +115,7 @@ defmodule SmokerGadget.MixProject do
       {:timex, "~> 3.5"},
 
       # Dependencies for all targets except :host
-      {:nerves, "~> 1.4", runtime: false, @all_targets},
+      {:nerves, "~> 1.4", runtime: false, targets: @all_targets},
       {:nerves_runtime, "~> 0.6", targets: @all_targets},
       {:nerves_init_gadget, "~> 0.4", targets: @all_targets},
       {:circuits_spi, "~> 0.1", targets: @all_targets},
