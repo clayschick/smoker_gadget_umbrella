@@ -4,7 +4,7 @@ defmodule SmokerGadget.MixProject do
   @target System.get_env("MIX_TARGET") || "host"
   @target_env System.get_env("MIX_ENV") || "test"
 
-  # @all_targets [:rpi, :rpi0, :rpi2, :rpi3, :rpi3a, :bbb, :x86_64]
+  @all_targets [:rpi, :rpi0, :rpi2, :rpi3, :rpi3a, :bbb, :x86_64]
 
   def project do
     [
@@ -51,27 +51,27 @@ defmodule SmokerGadget.MixProject do
   # Type `mix help deps` for examples and options.
 
   # Dependencies for all targets
-  defp deps do
-    [
-      # Cannot have and only: statement here because the prod build fails
-      {:nerves, "~> 1.3", runtime: false},
-      {:shoehorn, "~> 0.4"},
-      {:ring_logger, "~> 0.6"},
-      {:toolshed, "~> 0.2"},
-      {:timex, "~> 3.5"} # ,
-      # {:circuits_spi, "~> 0.1"},
-      # {:pigpiox, "~> 0.1"}
-    ] ++ deps(@target)
-  end
+  # defp deps do
+  #   [
+  #     # Cannot have and only: statement here because the prod build fails
+  #     {:nerves, "~> 1.3", runtime: false},
+  #     {:shoehorn, "~> 0.4"},
+  #     {:ring_logger, "~> 0.6"},
+  #     {:toolshed, "~> 0.2"},
+  #     {:timex, "~> 3.5"} # ,
+  #     # {:circuits_spi, "~> 0.1"},
+  #     # {:pigpiox, "~> 0.1"}
+  #   ] ++ deps(@target)
+  # end
 
   # Specify target specific dependencies
-  defp deps("host") do
-    [
-      {:ex_doc, "~> 0.20", only: :dev, runtime: false},
-      {:credo, "~> 1.0.0", only: [:dev, :test], runtime: false},
-      {:dialyxir, "~> 1.0.0-rc.6", only: [:dev, :test], runtime: false}
-    ]
-  end
+  # defp deps("host") do
+  #   [
+  #     {:ex_doc, "~> 0.20", only: :dev, runtime: false},
+  #     {:credo, "~> 1.0.0", only: [:dev, :test], runtime: false},
+  #     {:dialyxir, "~> 1.0.0-rc.6", only: [:dev, :test], runtime: false}
+  #   ]
+  # end
 
   # Dependencies for all targets except :host
   # The circuits_spi and pigpiox libraries are not available when
@@ -80,48 +80,58 @@ defmodule SmokerGadget.MixProject do
   # start because the Pigpiox library tries to start but there is no
   # pigpiod deamon running so it fails because we are testing on the
   # where no deamon exists.
-  defp deps(target) do
-    [
-      {:nerves_runtime, "~> 0.6"},
-      {:nerves_init_gadget, "~> 0.4"},
-      {:circuits_spi, "~> 0.1"},
-      # The pigpiod deamon runs on rpi0 by default but not on all target devices
-      # therefore this should be included in the target specific deps below.
-      {:pigpiox, "~> 0.1"}
-    ] ++ system(target)
-  end
-
-  defp system("rpi"), do: [{:nerves_system_rpi, "~> 1.5", runtime: false}]
-  defp system("rpi0"), do: [{:nerves_system_rpi0, "~> 1.5", runtime: false}]
-  defp system("rpi2"), do: [{:nerves_system_rpi2, "~> 1.5", runtime: false}]
-  defp system("rpi3"), do: [{:nerves_system_rpi3, "~> 1.5", runtime: false}]
-  defp system("bbb"), do: [{:nerves_system_bbb, "~> 2.0", runtime: false}]
-  defp system("x86_64"), do: [{:nerves_system_x86_64, "~> 1.5", runtime: false}]
-  defp system(target), do: Mix.raise("Unknown MIX_TARGET: #{target}")
-
-  # defp deps do
+  # defp deps(target) do
   #   [
-  #     # Dependencies for all targets
-  #     {:nerves, "~> 1.4", runtime: false},
-  #     {:shoehorn, "~> 0.4"},
-  #     {:ring_logger, "~> 0.6"},
-  #     {:toolshed, "~> 0.2"},
-  #     {:timex, "~> 3.5"},
-
-  #     # Dependencies for all targets except :host
-  #     {:nerves_runtime, "~> 0.6", targets: @all_targets},
-  #     {:nerves_init_gadget, "~> 0.4", targets: @all_targets},
-
-  #     # Dependencies for specific targets
-  #     {:nerves_system_rpi, "~> 1.6", runtime: false, targets: :rpi},
-  #     {:nerves_system_rpi0, "~> 1.6", runtime: false, targets: :rpi0},
-  #     {:nerves_system_rpi2, "~> 1.6", runtime: false, targets: :rpi2},
-  #     {:nerves_system_rpi3, "~> 1.6", runtime: false, targets: :rpi3},
-  #     {:nerves_system_rpi3a, "~> 1.6", runtime: false, targets: :rpi3a},
-  #     {:nerves_system_bbb, "~> 2.0", runtime: false, targets: :bbb},
-  #     {:nerves_system_x86_64, "~> 1.6", runtime: false, targets: :x86_64},
-  #   ]
+  #     {:nerves_runtime, "~> 0.6"},
+  #     {:nerves_init_gadget, "~> 0.4"},
+  #     {:circuits_spi, "~> 0.1"},
+  #     # The pigpiod deamon runs on rpi0 by default but not on all target devices
+  #     # therefore this should be included in the target specific deps below.
+  #     {:pigpiox, "~> 0.1"}
+  #   ] ++ system(target)
   # end
+
+  # defp system("rpi"), do: [{:nerves_system_rpi, "~> 1.5", runtime: false}]
+  # defp system("rpi0"), do: [{:nerves_system_rpi0, "~> 1.5", runtime: false}]
+  # defp system("rpi2"), do: [{:nerves_system_rpi2, "~> 1.5", runtime: false}]
+  # defp system("rpi3"), do: [{:nerves_system_rpi3, "~> 1.5", runtime: false}]
+  # defp system("bbb"), do: [{:nerves_system_bbb, "~> 2.0", runtime: false}]
+  # defp system("x86_64"), do: [{:nerves_system_x86_64, "~> 1.5", runtime: false}]
+  # defp system(target), do: Mix.raise("Unknown MIX_TARGET: #{target}")
+
+  # I want to keep everything Nerves related out of host target
+
+  defp deps do
+    [
+      # Dependencies for all targets
+      {:ex_doc, "~> 0.20", only: :dev, runtime: false},
+      {:credo, "~> 1.0.0", only: [:dev, :test], runtime: false},
+      {:dialyxir, "~> 1.0.0-rc.6", only: [:dev, :test], runtime: false},
+
+      # {:nerves, "~> 1.4", runtime: false},
+      {:shoehorn, "~> 0.4"},
+      {:ring_logger, "~> 0.6"},
+      {:toolshed, "~> 0.2"},
+      {:timex, "~> 3.5"},
+
+      # Dependencies for all targets except :host
+      {:nerves, "~> 1.4", runtime: false, @all_targets},
+      {:nerves_runtime, "~> 0.6", targets: @all_targets},
+      {:nerves_init_gadget, "~> 0.4", targets: @all_targets},
+      {:circuits_spi, "~> 0.1", targets: @all_targets},
+      {:pigpiox, "~> 0.1", targets: @all_targets}
+
+
+      # Dependencies for specific targets
+      {:nerves_system_rpi, "~> 1.6", runtime: false, targets: :rpi},
+      {:nerves_system_rpi0, "~> 1.6", runtime: false, targets: :rpi0},
+      {:nerves_system_rpi2, "~> 1.6", runtime: false, targets: :rpi2},
+      {:nerves_system_rpi3, "~> 1.6", runtime: false, targets: :rpi3},
+      {:nerves_system_rpi3a, "~> 1.6", runtime: false, targets: :rpi3a},
+      {:nerves_system_bbb, "~> 2.0", runtime: false, targets: :bbb},
+      {:nerves_system_x86_64, "~> 1.6", runtime: false, targets: :x86_64},
+    ]
+  end
 
   # Aliases are shortcuts or tasks specific to the current project.
   #
