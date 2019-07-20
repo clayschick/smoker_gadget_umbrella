@@ -119,7 +119,7 @@ defmodule SmokerGadget.MixProject do
       {:nerves_runtime, "~> 0.6", targets: @all_targets},
       {:nerves_init_gadget, "~> 0.4", targets: @all_targets},
       {:circuits_spi, "~> 0.1", targets: @all_targets},
-      {:pigpiox, "~> 0.1", targets: @all_targets}
+      {:pigpiox, "~> 0.1", targets: @all_targets},
 
 
       # Dependencies for specific targets
