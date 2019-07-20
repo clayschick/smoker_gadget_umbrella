@@ -6,10 +6,27 @@ Created the project using
 $ mix phx.new --umbrella --no-ecto smoker_gadget 
 ```
 
-Run it like this
+Run it like this for TEST
 
 ```elixir
-MIX_TARGET=host MIX_ENV=dev mix phx.server
+MIX_ENV=test MIX_TARGET=host mix test
+```
+
+Run it like this in DEV
+
+```elixir
+MIX_ENV=dev MIX_TARGET=host mix phx.server
+```
+
+OR
+
+```elixir
+MIX_ENV=dev MIX_TARGET=host iex -S mix phx.server
+```
+
+Run it like this in  PROD (which means running it on a device)
+```elixir
+MIX_ENV=prod MIX_TARGET=rpi0 SECRET_KEY_BASE=secret mix do deps.get, firmware
 ```
 
 I created the Umbrella project because I could not get the Poncho project to build in a CI enviornment.

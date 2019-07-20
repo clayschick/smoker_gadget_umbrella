@@ -33,7 +33,7 @@ jobs:
           keys:
             - v1-build-cache-{{ .Branch }}
             - v1-build-cache
-      - run: mix do deps.get --only test, compile # get updated dependencies & compile them
+      - run: MIX_ENV=test MIX_TARGET=host mix do deps.get, compile # get updated dependencies & compile them
       - save_cache:
           key: v1-mix-cache-{{ .Branch }}-{{ checksum "mix.lock" }}
           paths: "deps"
